@@ -140,6 +140,19 @@ function M.handle_results(results)
     -- Only one result found.
     M.replace_str_in_current_line(results[1])
   else
+    -- Sort results by result.str length, check if result.str is not nil
+    table.sort(results, function(a, b)
+      if a.str == nil or b.str == nil then return false end
+      if #a.str == #b.str then return a.str < b.str end
+      return #a.str > #b.str
+    end)
+
+    -- Selects the first match if it is the only one with the maximum length.
+    local config = require('swap.config')
+    if config.options.autoselect_first_longest_match and #results > 1 and #results[1].str > #results[2].str then
+      M.replace_str_in_current_line(results[1])
+      return
+    end
     -- Multiple results found, asks the user to select one.
     local choices = {}
     for _, result in ipairs(results) do
