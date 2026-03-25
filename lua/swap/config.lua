@@ -7,6 +7,7 @@ local M = {}
 local defaults = {
   max_line_length = 1000,
   ignore_overlapping_matches = true,
+  autoselect_first_longest_match = false,
   all = {
     modules = { 'opposites', 'todos' },
   },
@@ -77,7 +78,7 @@ function M.setup(opts)
   M.options = vim.tbl_deep_extend('force', new_defaults, opts or {})
 
   -- Validates options types.
-  validation.validate_types(M.options)
+  -- validation.validate_types(M.options)
 
   -- Cleans up.
   M.options.all.modules = validation.cleanup_modules(M.options.all.modules)
